@@ -5,7 +5,9 @@ score = 0
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 speed = 10
-fishspeed = 2
+fishspeedy = 2
+fishspeedx = 2
+randomlenofmovement = random.randint(10, 100)
 BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 first_time = True
@@ -79,9 +81,6 @@ class Tester2(pygame.sprite.Sprite):
         self.rect.x = test2x
         self.rect.y = test2y
 
-def timer():
-    for n in range(3):
-        return n
 
 #def standard_game(Lazer, enemy):
 
@@ -118,6 +117,7 @@ screen = pygame.display.set_mode([800, 600])
 clock = pygame.time.Clock()
 done = False
 gameon = False
+counter = 0
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -149,22 +149,39 @@ while not done:
             gamesprites.add(Lazer)
             gamesprites.draw(screen)
             pygame.display.flip()
-    for addingtolist in range(20):
-        direction = random.randint(0, 1)
-        randomovementlist.append(direction)
-    for randomovement in range(len(randomovementlist)):
-        if randomovement == 0:
-            ogposx = fish.rect.x
-            fish.rect.x += fishspeed
-            if int(fish.rect.x)+100 < ogposx or int(fish.rect.x)-100 > ogposx:# or int(fish.rect.x) < 0:
-                fishspeed = -1 * (fishspeed)
-                break
-        elif randomovement == 1:
-            ogposy = fish.rect.y
-            fish.rect.y += fishspeed
-            if int(fish.rect.y)+100 < ogposy or int(fish.rect.y)-100>ogposy:# or int(fish.rect.y) < 0:
-                fishspeed = -1*(fishspeed)
-                break
+    if gameon:
+
+        if counter == randomlenofmovement or keys[pygame.K_SPACE] and pygame.sprite.collide_rect(Lazer, fish):
+            fishspeedx = random.randint(0, 3)
+            fishspeedy = random.randint(0, 3)
+            randomlenofmovement = random.randint(50, 200)
+            randomfwdbwd = random.randint(0, 1)
+            if randomfwdbwd == 1:
+                fishspeedx = -1 * fishspeedx
+            randomfwdbwd = random.randint(0, 1)
+            if randomfwdbwd == 1:
+                fishspeedy = -1 * fishspeedy
+        else:
+            counter += 1
+            fish.rect.x += fishspeedx
+            fish.rect.y += fishspeedy
+        """
+        choose a rand num for how many times you move before changing direction
+        increase a counter every loop of the while loop and check against the rand num
+        when counter == rand num generate new increment values (rand?) for x and y, randpmly decide if x or y are negative
+        """
+        # if randomovement == 0:
+        #     ogposx = fish.rect.x
+        #     fish.rect.x += fishspeed
+        #     if int(fish.rect.x)+2 < ogposx or int(fish.rect.x)-2 > ogposx:# or int(fish.rect.x) < 0:
+        #         fishspeed = -1 * fishspeed
+        #         break
+        # elif randomovement == 1:
+        #     ogposy = fish.rect.y
+        #     fish.rect.y += fishspeed
+        #     if int(fish.rect.y)+2 < ogposy or int(fish.rect.y)-2>ogposy:# or int(fish.rect.y) < 0:
+        #         fishspeed = -1*fishspeed
+        #         break
         #elif randomovement == 2:
          #   ogposx = fish.rect.x
           #  fish.rect.x += fishspeed
