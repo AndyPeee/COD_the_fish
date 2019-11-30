@@ -1,5 +1,2 @@
-import random
-
-for addingtolist in range(10):
-    direction = random.randint(0,3)
-    print(direction)
+import pygame
+print(pygame.font.get_fonts())
